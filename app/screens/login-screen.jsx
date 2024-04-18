@@ -1,8 +1,34 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ResizeMode, Video } from "expo-av";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as WebBrowser from "expo-web-browser";
+import { useOAuth } from "@clerk/clerk-expo";
+import { useCallback } from "react";
+
+import { useWarmUpBrowser } from "../../hooks/useWarmUpBrowser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
+  useWarmUpBrowser();
+
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  const onPress = useCallback(async () => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } =
+        await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error("OAuth error", err);
+    }
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, height: "100%" }}>
       <View style={styles.container}>
@@ -23,7 +49,7 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity
-            onPress={() => cc3}
+            onPress={onPress}
             activeOpacity={0.7}
             style={styles.buttonContainer}
           >
