@@ -24,13 +24,11 @@ const LoginScreen = () => {
         setActive({ session: createdSessionId });
 
         if (signUp?.emailAddress) {
-          const response = await createNewAccount(
+          await createNewAccount(
             signUp.firstName,
             signUp?.emailAddress.split("@")[0],
             signUp?.emailAddress
           );
-
-          console.log(response);
         }
       } else {
         // Use signIn or signUp for next steps such as MFA
