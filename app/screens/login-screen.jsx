@@ -6,6 +6,7 @@ import { useOAuth } from "@clerk/clerk-expo";
 import { useCallback } from "react";
 
 import { useWarmUpBrowser } from "../../hooks/useWarmUpBrowser";
+import { createNewAccount } from "../../utils/createNewAccount";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,6 +22,16 @@ const LoginScreen = () => {
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
+
+        if (signUp?.emailAddress) {
+          const response = await createNewAccount(
+            signUp.firstName,
+            signUp?.emailAddress.split("@")[0],
+            signUp?.emailAddress
+          );
+
+          console.log(response);
+        }
       } else {
         // Use signIn or signUp for next steps such as MFA
       }
