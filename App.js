@@ -4,9 +4,10 @@ import { useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import * as SplashScreen from "expo-splash-screen";
+import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./app/screens/login-screen";
-import HomeScreen from "./app/screens/home-screen";
+import TabNavigation from "./app/navigations/tab-navigation";
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -31,7 +32,9 @@ export default function App() {
     >
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <SignedIn>
-          <HomeScreen />
+          <NavigationContainer>
+            <TabNavigation />
+          </NavigationContainer>
         </SignedIn>
         <SignedOut>
           <LoginScreen />
