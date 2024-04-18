@@ -24,6 +24,14 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": [
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Snap Share accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }

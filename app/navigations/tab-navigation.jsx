@@ -3,8 +3,8 @@ import { AntDesign } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/home-screen";
 import SearchScreen from "../screens/search-screen";
-import CreateScreen from "../screens/create-screen";
 import ProfileScreen from "../screens/profile-screen";
+import StackNavigation from "./stack-navigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="Create"
-        component={CreateScreen}
+        component={StackNavigation}
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="pluscircleo" size={size} color={color} />

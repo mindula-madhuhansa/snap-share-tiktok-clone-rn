@@ -65,7 +65,7 @@ const LoginScreen = () => {
             <Image
               source={require("../../assets/images/google.png")}
               alt="Google Logo"
-              resizeMode="contain"
+              resizeMode="cover"
               style={{ height: 28, width: 28 }}
             />
             <Text style={styles.buttonText}>Sign In with Google</Text>
