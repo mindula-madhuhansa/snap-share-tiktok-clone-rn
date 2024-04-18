@@ -1,8 +1,11 @@
 import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import LoginScreen from "./app/screens/login-screen";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -22,20 +25,14 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <Text style={{ fontFamily: "outfit-regular" }}>
-        Open up App.js to start working on your app!
-      </Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      <LoginScreen />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
