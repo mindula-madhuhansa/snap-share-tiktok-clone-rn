@@ -13,6 +13,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 
+import { s3Bucket } from "../../lib/awsS3";
+
 const PreviewScreen = () => {
   const params = useRoute().params;
   const navigation = useNavigation();
@@ -23,7 +25,34 @@ const PreviewScreen = () => {
     console.log(params);
   }, []);
 
-  const publishHandler = () => {};
+  const publishHandler = () => {
+    uploadFileToAWS(params.thumbnail, "image");
+    uploadFileToAWS(params.video, "video");
+  };
+
+  const uploadFileToAWS = async (file, type) => {
+    const fileType = file.split(".").pop();
+
+    const params = {
+      Bucket: "snap-share",
+      Key: `snapshare-${Date.now()}.${fileType}`,
+      Body: await fetch(file).then((res) => res.blob()),
+      ACL: "public-read",
+      ContentType: type === "video" ? `video/${fileType}` : `image/${fileType}`,
+    };
+
+    try {
+      const data = await s3Bucket
+        .upload(params)
+        .promise()
+        .then((res) => {
+          console.log("File Uploaded");
+          console.log("RES:", res);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -57,7 +86,11 @@ const PreviewScreen = () => {
               style={styles.descriptionBox}
             />
 
-            <TouchableOpacity activeOpacity={0.7} style={styles.publishBtn}>
+            <TouchableOpacity
+              onPress={publishHandler}
+              activeOpacity={0.7}
+              style={styles.publishBtn}
+            >
               <AntDesign name="upload" size={24} color="white" />
               <Text style={styles.btnText}>Publish</Text>
             </TouchableOpacity>
