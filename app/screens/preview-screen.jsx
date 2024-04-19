@@ -12,8 +12,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
-import { s3Bucket } from "../../lib/awsS3";
+import { s3 } from "../../lib/awsS3";
 
 const PreviewScreen = () => {
   const params = useRoute().params;
@@ -32,22 +33,23 @@ const PreviewScreen = () => {
 
   const uploadFileToAWS = async (file, type) => {
     const fileType = file.split(".").pop();
-
-    const params = {
-      Bucket: "snap-share",
-      Key: `snapshare-${Date.now()}.${fileType}`,
-      Body: await fetch(file).then((res) => res.blob()),
-      ACL: "public-read",
-      ContentType: type === "video" ? `video/${fileType}` : `image/${fileType}`,
-    };
+    const fileName = `snapshare-${Date.now()}.${fileType}`;
 
     try {
-      const data = await s3Bucket
-        .upload(params)
-        .promise()
+      const data = await s3
+        .send(
+          new PutObjectCommand({
+            Bucket: "snap-share",
+            Key: fileName,
+            Body: await fetch(file).then((res) => res.blob()),
+            ACL: "public-read",
+            ContentType:
+              type === "video" ? `video/${fileType}` : `image/${fileType}`,
+          })
+        )
         .then((res) => {
-          console.log("File Uploaded");
-          console.log("RES:", res);
+          console.log("File Uploaded!");
+          console.log(res);
         });
     } catch (error) {
       console.error(error);

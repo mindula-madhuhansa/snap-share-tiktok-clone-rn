@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
+import "react-native-get-random-values";
 
 import LoginScreen from "./app/screens/login-screen";
 import TabNavigation from "./app/navigations/tab-navigation";
