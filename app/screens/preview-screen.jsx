@@ -21,14 +21,15 @@ const PreviewScreen = () => {
   const navigation = useNavigation();
 
   const [description, setDescription] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
 
   useEffect(() => {
     console.log(params);
   }, []);
 
-  const publishHandler = () => {
-    uploadFileToAWS(params.thumbnail, "image");
-    uploadFileToAWS(params.video, "video");
+  const publishHandler = async () => {
+    await uploadFileToAWS(params.thumbnail, "image");
+    await uploadFileToAWS(params.video, "video");
   };
 
   const uploadFileToAWS = async (file, type) => {
@@ -49,7 +50,13 @@ const PreviewScreen = () => {
         )
         .then((res) => {
           console.log("File Uploaded!");
-          console.log(res);
+
+          if (type === "video") {
+            setVideoUrl(`https://snap-share.s3.amazonaws.com/${fileName}`);
+            console.log(`https://snap-share.s3.amazonaws.com/${fileName}`);
+          } else {
+            console.log(`https://snap-share.s3.amazonaws.com/${fileName}`);
+          }
         });
     } catch (error) {
       console.error(error);
